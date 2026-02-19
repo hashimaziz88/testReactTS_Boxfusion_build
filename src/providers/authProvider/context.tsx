@@ -14,7 +14,7 @@ export interface IAuthStateContext {
 
 export interface IAuthActionContext {
     login: (username: string, password: string) => Promise<{ success: boolean; role?: string }>;
-    logout: () => void;
+    logout: () => Promise<{ success: boolean }>;
 }
 
 export const INITIAL_STATE: IAuthStateContext = {

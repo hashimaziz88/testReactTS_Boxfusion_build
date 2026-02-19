@@ -1,6 +1,7 @@
 import React from "react";
-import { Layout, Menu, theme } from "antd";
-import { Outlet, Link } from "react-router-dom";
+import { Layout, Menu, theme, Button } from "antd";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useAuthActions } from "../providers/authProvider";
 
 const { Header, Content, Footer } = Layout;
 
@@ -9,13 +10,25 @@ const items = [
     { key: 1, label: <Link to="/">Home</Link> },
     { key: 2, label: <Link to="/client">Todos</Link> },
     { key: 3, label: <Link to="/admin">Admin</Link> },
-    
+
 ];
 
 const App: React.FC = () => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    const navigate = useNavigate();
+    const { logout } = useAuthActions();
+
+    const handleLogout = async () => {
+        try {
+            const res = await logout();
+            if (res && res.success) navigate("/login");
+        } catch (err) {
+            console.error("Logout failed", err);
+        }
+    };
 
     return (
         <Layout
@@ -27,7 +40,7 @@ const App: React.FC = () => {
                 overflow: "auto",
             }}
         >
-            <Header style={{ display: "flex" }}>
+            <Header style={{ display: "flex", alignItems: "center" }}>
                 <div className="demo-logo" />
                 <Menu
                     theme="dark"
@@ -35,8 +48,12 @@ const App: React.FC = () => {
                     defaultSelectedKeys={["2"]}
                     items={items}
                     style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
-
                 />
+                <div style={{ marginLeft: 12 }}>
+                    <Button type="primary" onClick={handleLogout}>
+                        Logout
+                    </Button>
+                </div>
             </Header>
             <Content style={{ padding: "16px 24px", overflow: "auto" }}>
                 <div style={{
@@ -49,7 +66,7 @@ const App: React.FC = () => {
                     <Outlet />
                 </div>
             </Content>
-            <Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
+            <Footer style={{ textAlign: "center" }}>hashimaziz88 ©{new Date().getFullYear()} Created by Hashim Aziz Muhammad</Footer>
         </Layout >
     );
 };

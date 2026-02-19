@@ -1,5 +1,5 @@
 import React, { useReducer, useContext } from "react";
-import { INITIAL_STATE, IAuthActionContext, IAuthStateContext, AuthActionContext, AuthStateContext } from "./context";
+import { INITIAL_STATE, AuthActionContext, AuthStateContext } from "./context";
 import { AuthReducer } from "./reducer";
 import { loginPending, loginSuccess, loginError, logoutError, logoutPending, logoutSuccess } from "./actions";
 import { dummyLoginInstance } from "../../utils/dummyLoginInstance";
@@ -20,11 +20,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return response;
     };
 
-    const logout = () => {
-        
-        localStorage.removeItem("auth_token");
-        localStorage.removeItem("user_role");
-        dispatch(logoutSuccess());
+    const logout = async () => {
+        try {
+            dispatch(logoutPending());
+            // perform any async logout work if needed (dummy instance clears storage)
+            await Promise.resolve();
+            if (dummyLoginInstance && typeof dummyLoginInstance.logout === "function") {
+                dummyLoginInstance.logout();
+            } else {
+                localStorage.removeItem("auth_token");
+                localStorage.removeItem("user_role");
+            }
+            dispatch(logoutSuccess());
+            return { success: true };
+        } catch (err) {
+            console.error("Logout error:", err);
+            dispatch(logoutError());
+            return { success: false };
+        }
     };
 
     return (

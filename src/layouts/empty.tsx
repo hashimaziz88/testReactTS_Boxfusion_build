@@ -1,7 +1,6 @@
 import React from "react";
 import { Layout, Menu, theme } from "antd";
 import { Link, Outlet } from "react-router-dom";
-import { useStyles } from "./style/style";
 
 const { Header, Content, Footer } = Layout;
 
@@ -51,7 +50,7 @@ const App: React.FC = () => {
           <Outlet />
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
+      <Footer style={{ textAlign: "center" }}>hashimaziz88 ©{new Date().getFullYear()} Created by Hashim Aziz Muhammad</Footer>
     </Layout >
   );
 };
