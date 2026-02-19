@@ -31,4 +31,4 @@ export const INITIAL_STATE: ITodoStateContext = {
 
 export const TodoStateContext = createContext<ITodoStateContext>(INITIAL_STATE);
 
-export const TodoActionContext = createContext<ITodoActionContext | undefined>(undefined);
+export const TodoActionContext = createContext<ITodoActionContext>(undefined!);

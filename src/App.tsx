@@ -16,8 +16,7 @@ function App() {
       </Route>
 
       <Route path="/client" element={<ClientLayout />}>
-        <Route index element={<Home />} />
-        <Route path="home" element={<Home />} />
+        <Route index element={<TodosPage />} />
         <Route path="todos" element={<TodosPage />} />
       </Route>
 

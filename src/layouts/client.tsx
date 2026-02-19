@@ -5,12 +5,13 @@ import { useStyles } from "./style/style";
 
 const { Header, Content, Footer } = Layout;
 
-const headings = ["Home", "Client", "Todos", "Admin"];
+const headings = ["Home", "Todos", "Admin"];
 
-const items = headings.map((value, index) => ({
-    key: index + 1,
-    label: <Link to={`/${value === 'Home' ? '' : value.toLowerCase()}`}>{value}</Link>,
-}));
+const items = [
+    { key: 1, label: <Link to="/">Home</Link> },
+    { key: 2, label: <Link to="/client">Todos</Link> },
+    { key: 3, label: <Link to="/client">Admin</Link> },
+];
 
 const App: React.FC = () => {
     const styles = useStyles();
@@ -36,7 +37,8 @@ const App: React.FC = () => {
                     mode="horizontal"
                     defaultSelectedKeys={["2"]}
                     items={items}
-                    style={{ flex: 1, minWidth: 0 }}
+                    style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
+
                 />
             </Header>
             <Content style={{ padding: "16px 24px", overflow: "auto" }}>

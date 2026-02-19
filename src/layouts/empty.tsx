@@ -7,10 +7,11 @@ const { Header, Content, Footer } = Layout;
 
 const headings = ["Home", "Client", "Admin"];
 
-const items = headings.map((value, index) => ({
-  key: index + 1,
-  label: <Link to={`/${value === 'Home' ? '' : value.toLowerCase()}`}>{value}</Link>,
-}));
+const items = [
+  { key: 1, label: <Link to="/">Home</Link> },
+  { key: 2, label: <Link to="/client">Client</Link> },
+  { key: 3, label: <Link to="/client">Admin</Link> },
+];
 
 const App: React.FC = () => {
   const styles = useStyles();
@@ -26,6 +27,7 @@ const App: React.FC = () => {
         flex: 1,
         height: "100%",
         width: "100%",
+        overflow: "auto",
       }}
     >
       <Header style={{ display: "flex" }}>
@@ -35,15 +37,18 @@ const App: React.FC = () => {
           mode="horizontal"
           defaultSelectedKeys={["1"]}
           items={items}
-          style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "center" }}
+          style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
 
         />
       </Header>
-      <Content style={{ padding: "0 0", }}>
+      <Content style={{ padding: "16px 24px", backgroundColor: colorBgContainer }}>
         <div style={{
-          backgroundColor: colorBgContainer,
+          backgroundColor: "white",
           borderRadius: borderRadiusLG,
-          alignItems: "center", justifyContent: "center", display: "flex", height: "100%", width: "100%"
+          boxSizing: "border-box",
+          padding: 2,
+          width: "100%",
+          height: "100%",
         }}>
           <Outlet />
         </div>

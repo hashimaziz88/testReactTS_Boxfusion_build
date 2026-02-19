@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card, Flex } from 'antd';
+import { Avatar, Button, Card } from 'antd';
 import type { CardMetaProps, CardProps } from 'antd';
 import { createStyles } from 'antd-style';
 import { useEffect } from 'react';
@@ -37,35 +37,6 @@ const stylesCard: CardProps['styles'] = {
     },
 };
 
-const stylesCardFn: CardProps['styles'] = (info) => {
-    if (info.props.variant === 'outlined') {
-        return {
-            root: {
-                borderColor: '#696FC7',
-                boxShadow: '0 2px 8px #A7AAE1',
-                borderRadius: 8,
-            },
-            extra: {
-                color: '#696FC7',
-            },
-            title: {
-                fontSize: 16,
-                fontWeight: 500,
-                color: '#A7AAE1',
-            },
-        } satisfies CardProps['styles'];
-    }
-};
-
-const stylesCardMeta: CardMetaProps['styles'] = {
-    title: {
-        color: '#A7AAE1',
-    },
-    description: {
-        color: '#A7AAE1',
-    },
-};
-
 const actions = [
     <HeartOutlined key="heart" style={{ color: '#ff6b6b' }} />,
     <ShareAltOutlined key="share" style={{ color: '#4ecdc4' }} />,
@@ -99,8 +70,7 @@ const App: React.FC = () => {
     };
 
     const sharedCardMetaProps: CardMetaProps = {
-        avatar: <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />,
-        description: 'This is the description',
+        avatar: <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${Math.floor(Math.random() * 1000)}`} />,
     };
 
     return (
@@ -108,12 +78,12 @@ const App: React.FC = () => {
             {todos?.map((todo: ITodo) => (
                 <Card key={todo.id}
                     {...sharedCardProps}
-                    title={todo.todo}
+                    title={todo.id}
                     styles={stylesCard}
                     extra={<Button type="link">More</Button>}
                     variant="borderless"
                 >
-                    <Meta {...sharedCardMetaProps} title="Object Card Meta title" />
+                    <Meta {...sharedCardMetaProps} title={todo.todo} />
                 </Card>
             ))}
         </div>
