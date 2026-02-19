@@ -5,16 +5,14 @@ import { useStyles } from "./style/style";
 
 const { Header, Content, Footer } = Layout;
 
-const headings = ["Home", "Client", "Admin"];
 
 const items = [
   { key: 1, label: <Link to="/">Home</Link> },
   { key: 2, label: <Link to="/client">Client</Link> },
-  { key: 3, label: <Link to="/client">Admin</Link> },
+  { key: 3, label: <Link to="/admin">Admin</Link> },
 ];
 
 const App: React.FC = () => {
-  const styles = useStyles();
 
   const {
     token: { colorBgContainer, borderRadiusLG },

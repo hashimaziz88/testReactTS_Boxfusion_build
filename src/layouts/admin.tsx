@@ -9,7 +9,6 @@ const items = [
     { key: 1, label: <Link to="/">Home</Link> },
     { key: 2, label: <Link to="/client">Todos</Link> },
     { key: 3, label: <Link to="/admin">Admin</Link> },
-    
 ];
 
 const App: React.FC = () => {
@@ -32,12 +31,13 @@ const App: React.FC = () => {
                 <Menu
                     theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={["2"]}
+                    defaultSelectedKeys={["3"]}
                     items={items}
                     style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
 
                 />
             </Header>
+            <h1 style={{ textAlign: "center", margin: "16px 0", color: "black" }}>Admin Dashboard</h1>
             <Content style={{ padding: "16px 24px", overflow: "auto" }}>
                 <div style={{
                     backgroundColor: colorBgContainer,

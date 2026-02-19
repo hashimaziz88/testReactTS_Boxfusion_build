@@ -1,60 +1,69 @@
 import React from "react";
-import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, Layout } from "antd";
+import { Button, Checkbox, Form, Input, Layout, Card, Typography, message } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useAuthActions, useAuthState } from "../../providers/authProvider";
 
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
+const { Title, Text } = Typography;
+
+type LoginValues = {
+  username: string;
+  password: string;
+  remember?: boolean;
 };
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
+const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { login } = useAuthActions();
+  const authState = useAuthState();
+
+  const onFinish = async (values: LoginValues) => {
+    try {
+      const res = await login(values.username, values.password);
+      if (res && res.success) {
+        message.success("Login successful");
+        if (res.role === "admin") navigate("/admin");
+        else navigate("/client");
+      } else {
+        message.error("Invalid credentials");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      message.error("Login failed");
+    }
+  };
+
+  return (
+    <Layout style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+      <Card style={{ width: 420 }}>
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <Title level={3} style={{ margin: 0 }}>
+            Sign in
+          </Title>
+          <Text type="secondary">Enter your credentials to continue</Text>
+        </div>
+
+        <Form<LoginValues> layout="vertical" onFinish={onFinish} initialValues={{ remember: true }}>
+          <Form.Item name="username" label="Username" rules={[{ required: true, message: "Please enter your username" }]}>
+            <Input placeholder="admin or client" />
+          </Form.Item>
+
+          <Form.Item name="password" label="Password" rules={[{ required: true, message: "Please enter your password" }]}>
+            <Input.Password placeholder="admin or client" />
+          </Form.Item>
+
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block loading={!!authState.isPending}>
+              Sign in
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </Layout>
+  );
 };
 
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
-
-const App: React.FC = () => (
-  <Layout style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-    <Form
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 600 }}
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item<FieldType>
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: "Please input your username!" }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item<FieldType>
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: "Please input your password!" }]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item label={null}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-  </Layout>
-);
-
-export default App;
+export default LoginPage;
