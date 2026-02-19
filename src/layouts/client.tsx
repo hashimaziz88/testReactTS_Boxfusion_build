@@ -5,7 +5,7 @@ import { useStyles } from "./style/style";
 
 const { Header, Content, Footer } = Layout;
 
-const headings = ["Home", "Client", "Admin"];
+const headings = ["Home", "Client", "Todos", "Admin"];
 
 const items = headings.map((value, index) => ({
     key: index + 1,
@@ -26,6 +26,7 @@ const App: React.FC = () => {
                 flex: 1,
                 height: "100%",
                 width: "100%",
+                overflow: "auto",
             }}
         >
             <Header style={{ display: "flex" }}>
@@ -38,11 +39,13 @@ const App: React.FC = () => {
                     style={{ flex: 1, minWidth: 0 }}
                 />
             </Header>
-            <Content style={{ padding: "0 0", }}>
+            <Content style={{ padding: "16px 24px", overflow: "auto" }}>
                 <div style={{
                     backgroundColor: colorBgContainer,
                     borderRadius: borderRadiusLG,
-                    alignItems: "center", justifyContent: "center", display: "flex", height: "100%", width: "100%"
+                    padding: 16,
+                    boxSizing: "border-box",
+                    width: "100%",
                 }}>
                     <Outlet />
                 </div>
