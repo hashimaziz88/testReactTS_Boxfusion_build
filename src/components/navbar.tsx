@@ -2,7 +2,7 @@ import React from "react";
 import { Layout, Menu, Button } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthActions } from "../providers/authProvider";
-
+import { useStyles } from "./styles/style";
 const { Header } = Layout;
 
 
@@ -16,21 +16,22 @@ const App: React.FC = () => {
     // const {
     //     token: { colorBgContainer, borderRadiusLG },
     // } = theme.useToken();
-
     const navigate = useNavigate();
     const { logout } = useAuthActions();
     const location = useLocation();
+    const { styles } = useStyles();
 
     const handleLogout = async () => {
         try {
             const res = await logout();
-            if (res && res.success) navigate("/login");
+            if (res && res.success) navigate("/");
         } catch (err) {
             console.error("Logout failed", err);
         }
     };
 
     return (
+
         <Header style={{ display: "flex", alignItems: "center" }}>
             <div className="demo-logo" />
             <Menu
@@ -38,12 +39,12 @@ const App: React.FC = () => {
                 mode="horizontal"
                 defaultSelectedKeys={[location.pathname === "/admin" ? "3" : location.pathname === "/client" ? "2" : "1"]}
                 items={items}
-                style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
+                className={styles.menu}
 
             />
             {(location.pathname === "/admin" || location.pathname === "/client") && (
                 <div style={{ marginLeft: 12 }}>
-                    <Button type="primary" onClick={handleLogout}>
+                    <Button type="primary" className={styles.button} onClick={handleLogout}>
                         Logout
                     </Button>
                 </div>

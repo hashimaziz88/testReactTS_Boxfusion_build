@@ -11,7 +11,7 @@ const withAuth = (WrappedComponent: React.ComponentType, { allowedRoles = [] }: 
         const userRole = localStorage.getItem("user_role");
 
         if (!token) {
-            return <Navigate to="/login" replace />;
+            return <Navigate to="/" replace />;
         }
 
         if (allowedRoles.length > 0 && !allowedRoles.includes(userRole || "")) {

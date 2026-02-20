@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditOutlined, DeleteOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card } from 'antd';
 import type { CardMetaProps, CardProps } from 'antd';
 import { useStyles, stylesCard } from './styles/style';
