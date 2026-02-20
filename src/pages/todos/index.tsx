@@ -12,6 +12,9 @@ const { Meta } = Card;
 // actions are rendered per-card so handlers can reference the todo
 
 const App: React.FC = () => {
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [editingTodo, setEditingTodo] = useState<ITodo | null>(null);
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
     const { styles: classNames } = useStyles();
     const { todos, isPending, isError } = useTodoState();
     const { getTodos, getTodo, createTodo, updateTodo, deleteTodo } = useTodoActions();
@@ -20,16 +23,14 @@ const App: React.FC = () => {
         getTodos();
     }, []);
 
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [editingTodo, setEditingTodo] = useState<ITodo | null>(null);
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
+
 
     const openCreateModal = () => setIsCreateOpen(true);
 
     const handleCreateOk = async (value: string) => {
-        if (!value || !value.trim()) return;
+        if (!value?.trim()) return;
         const newTodo: ITodo = { id: 0, todo: value.trim(), completed: false, userId: 1 };
-        await createTodo(newTodo);
+        createTodo(newTodo);
         setIsCreateOpen(false);
     };
 
@@ -43,7 +44,7 @@ const App: React.FC = () => {
     const handleEditOk = async (value?: string) => {
         if (!editingTodo) return;
         const updated: ITodo = { ...editingTodo, todo: (value ?? editingTodo.todo).trim() };
-        await updateTodo(updated);
+        updateTodo(updated);
         setIsEditOpen(false);
         setEditingTodo(null);
     };
@@ -61,7 +62,7 @@ const App: React.FC = () => {
             okText: 'Delete',
             cancelText: 'Cancel',
             onOk: async () => {
-                await deleteTodo(todo);
+                deleteTodo(todo);
             }
         });
     }
@@ -81,17 +82,19 @@ const App: React.FC = () => {
         classNames,
     };
 
+    const randomNumber = Math.floor(Math.random() * 1000)
+
     const sharedCardMetaProps: CardMetaProps = {
-        avatar: <Avatar src={`${import.meta.env.VITE_API_AVATAR_URL}${Math.floor(Math.random() * 1000)}`} />,
+        avatar: <Avatar src={`${import.meta.env.VITE_API_AVATAR_URL}${randomNumber}`} />,
     };
 
     return (
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: 16 }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+        <div className={classNames.divContainer}>
+            <div className={classNames.buttonContainer}>
                 <Button type="primary" onClick={openCreateModal}>Create Todo</Button>
             </div>
 
-            <div style={{ maxWidth: 1200, margin: '0 auto', padding: 16, boxSizing: 'border-box', display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+            <div className={classNames.cardContainer}>
                 {todos?.map((todo: ITodo) => (
                     <Card key={todo.id}
                         {...sharedCardProps}

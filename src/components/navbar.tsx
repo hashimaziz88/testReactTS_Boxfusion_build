@@ -33,7 +33,7 @@ const App: React.FC = () => {
 
     return (
 
-        <Header style={{ display: "flex", alignItems: "center" }}>
+        <Header className={styles.headerStyle}>
             <div className="demo-logo" />
             <Menu
                 theme="dark"
@@ -44,7 +44,7 @@ const App: React.FC = () => {
 
             />
             {(location.pathname === "/admin" || location.pathname === "/client") && (
-                <div style={{ marginLeft: 12 }}>
+                <div className={styles.buttonContainer}>
                     <Button type="primary" className={styles.button} onClick={handleLogout}>
                         Logout
                     </Button>

@@ -1,36 +1,20 @@
 import React from "react";
-import { Layout, theme } from "antd";
+import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/navbar";
-
+import { useStyles } from "./styles/style";
 const { Content, Footer } = Layout;
 
 
-const App: React.FC = () => {
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+const Admin: React.FC = () => {
+    const { styles } = useStyles()
 
     return (
-        <Layout
-            style={{
-                display: "flex",
-                flex: 1,
-                height: "100%",
-                width: "100%",
-                overflow: "auto",
-            }}
-        >
+        <Layout className={styles.layout}>
             <Navbar />
-            <h1 style={{ textAlign: "center", margin: "16px 0", color: "black" }}>Admin Dashboard</h1>
-            <Content style={{ padding: "16px 24px", overflow: "auto" }}>
-                <div style={{
-                    backgroundColor: colorBgContainer,
-                    borderRadius: borderRadiusLG,
-                    padding: 16,
-                    boxSizing: "border-box",
-                    width: "100%",
-                }}>
+            <h1 className={styles.h1}>Admin Dashboard</h1>
+            <Content className={styles.contentContainer}>
+                <div className={styles.outletContainer}>
                     <Outlet />
                 </div>
             </Content>
@@ -39,4 +23,4 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default Admin;

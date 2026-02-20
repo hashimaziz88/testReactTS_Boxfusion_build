@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Checkbox, Form, Input, Layout, Card, Typography, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuthActions, useAuthState } from "../../providers/authProvider";
-
+import { useStyles } from "./styles/style";
 const { Title, Text } = Typography;
 
 type LoginValues = {
@@ -15,9 +15,11 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuthActions();
   const authState = useAuthState();
+  const { styles } = useStyles()
 
   const onFinish = async (values: LoginValues) => {
     try {
+      message.loading("Logging in")
       const res = await login(values.username, values.password);
       if (res && res.success) {
         message.success("Login successful");
@@ -33,13 +35,13 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
-      <Card style={{ width: 420 }}>
-        <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <Title level={3} style={{ margin: 0 }}>
+    <Layout className={styles.layout} >
+      <Card className={styles.card}>
+        <div className={styles.signInText}>
+          <Title level={1}>
             Sign in
           </Title>
-          <Text type="secondary">Enter your credentials to continue</Text>
+          <Text type="secondary" >Enter your credentials to continue</Text>
         </div>
 
         <Form<LoginValues> layout="vertical" onFinish={onFinish} initialValues={{ remember: true }}>
@@ -62,7 +64,7 @@ const LoginPage: React.FC = () => {
           </Form.Item>
         </Form>
       </Card>
-    </Layout>
+    </Layout >
   );
 };
 

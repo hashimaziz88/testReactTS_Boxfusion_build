@@ -1,14 +1,23 @@
-import { createStyles } from 'antd-style';
+import { createStyles,css } from 'antd-style';
 
-export const useStyles = createStyles(() => ({
-    menu: {
-        flex: 1,
-        minWidth: 0,
-        justifyContent: "center",
-        display: "flex",
-    },
+export const useStyles = createStyles( {
+    menu: css `
+        flex: 1;
+        min-width: 0;
+        justify-content: center;
+        display: "flex";
+    `,
 
-    button: {
-        color: "black"
-    }
-}));
+    button: css`
+        color: black;
+    `,
+
+    headerStyle: css `
+        display: flex;
+        align-items: center;
+    `,
+
+    buttonContainer: `
+        margin-left: 12;
+    `
+});

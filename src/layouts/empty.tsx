@@ -1,36 +1,19 @@
 import React from "react";
-import { Layout, theme } from "antd";
+import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/navbar";
 const { Content, Footer } = Layout;
+import { useStyles } from "./styles/style";
 
+const Empty: React.FC = () => {
+  const { styles } = useStyles()
 
-const App: React.FC = () => {
-
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
 
   return (
-    <Layout
-      style={{
-        display: "flex",
-        flex: 1,
-        height: "100%",
-        width: "100%",
-        overflow: "auto",
-      }}
-    >
+    <Layout className={styles.layout}>
       <Navbar />
-      <Content style={{ padding: "16px 24px", backgroundColor: colorBgContainer }}>
-        <div style={{
-          backgroundColor: "white",
-          borderRadius: borderRadiusLG,
-          boxSizing: "border-box",
-          padding: 2,
-          width: "100%",
-          height: "100%",
-        }}>
+      <Content className={styles.contentContainer}>
+        <div className={styles.outletContainer}>
           <Outlet />
         </div>
       </Content>
@@ -39,4 +22,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Empty;
