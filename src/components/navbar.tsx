@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, theme } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthActions } from "../providers/authProvider";
 import { useStyles } from "./styles/style";
@@ -13,9 +13,6 @@ const items = [
 ];
 
 const App: React.FC = () => {
-    // const {
-    //     token: { colorBgContainer, borderRadiusLG },
-    // } = theme.useToken();
     const navigate = useNavigate();
     const { logout } = useAuthActions();
     const location = useLocation();

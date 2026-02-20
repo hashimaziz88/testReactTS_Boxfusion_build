@@ -1,19 +1,15 @@
-import React from 'react';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Avatar, Button, Card, Modal } from 'antd';
 import type { CardMetaProps, CardProps } from 'antd';
 import { useStyles, stylesCard } from './styles/style';
-import { useEffect } from 'react';
 import { useTodoActions, useTodoState } from '../../providers/todoProvider';
 import { ITodo } from '../../providers/todoProvider/context';
-
+import TodoEditModal from '../../components/todoEditModal';
 const { Meta } = Card;
 
 
-const actions = [
-    <EditOutlined key="edit" style={{ color: '#45b7d1' }} />,
-    <DeleteOutlined key="delete" style={{ color: '#ff6b6b' }} />,
-];
+// actions are rendered per-card so handlers can reference the todo
 
 const App: React.FC = () => {
     const { styles: classNames } = useStyles();
@@ -24,6 +20,51 @@ const App: React.FC = () => {
         getTodos();
     }, []);
 
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [editingTodo, setEditingTodo] = useState<ITodo | null>(null);
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+
+    const openCreateModal = () => setIsCreateOpen(true);
+
+    const handleCreateOk = async (value: string) => {
+        if (!value || !value.trim()) return;
+        const newTodo: ITodo = { id: 0, todo: value.trim(), completed: false, userId: 1 };
+        await createTodo(newTodo);
+        setIsCreateOpen(false);
+    };
+
+    const handleCreateCancel = () => setIsCreateOpen(false);
+
+    const openEditModal = (todo: ITodo) => {
+        setEditingTodo(todo);
+        setIsEditOpen(true);
+    };
+
+    const handleEditOk = async (value?: string) => {
+        if (!editingTodo) return;
+        const updated: ITodo = { ...editingTodo, todo: (value ?? editingTodo.todo).trim() };
+        await updateTodo(updated);
+        setIsEditOpen(false);
+        setEditingTodo(null);
+    };
+
+    const handleEditCancel = () => {
+        setIsEditOpen(false);
+        setEditingTodo(null);
+    };
+
+    const handleDelete = (todo: ITodo) => {
+        Modal.confirm({
+            title: 'Confirm',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Delete this todo?',
+            okText: 'Delete',
+            cancelText: 'Cancel',
+            onOk: async () => {
+                await deleteTodo(todo);
+            }
+        });
+    }
     if (isPending) {
         return <div>Loading Todos...</div>;
     }
@@ -38,7 +79,6 @@ const App: React.FC = () => {
 
     const sharedCardProps: CardProps = {
         classNames,
-        actions,
     };
 
     const sharedCardMetaProps: CardMetaProps = {
@@ -46,20 +86,33 @@ const App: React.FC = () => {
     };
 
     return (
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: 16, boxSizing: 'border-box', display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
-            {todos?.map((todo: ITodo) => (
-                <Card key={todo.id}
-                    {...sharedCardProps}
-                    title={todo.id}
-                    styles={stylesCard}
-                    extra={<Button type="link">More</Button>}
-                    variant="borderless"
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+                <Button type="primary" onClick={openCreateModal}>Create Todo</Button>
+            </div>
 
-                >
-                    <Meta {...sharedCardMetaProps} title={todo.todo} />
-                </Card>
-            ))}
-        </div>
+            <div style={{ maxWidth: 1200, margin: '0 auto', padding: 16, boxSizing: 'border-box', display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+                {todos?.map((todo: ITodo) => (
+                    <Card key={todo.id}
+                        {...sharedCardProps}
+                        title={todo.id}
+                        styles={stylesCard}
+                        actions={[
+                            <EditOutlined key="edit" style={{ color: '#45b7d1' }} onClick={() => openEditModal(todo)} />,
+                            <DeleteOutlined key="delete" style={{ color: '#ff6b6b' }} onClick={() => handleDelete(todo)} />,
+                        ]}
+                        extra={<Button type="link">More</Button>}
+                        variant="borderless"
+
+                    >
+                        <Meta {...sharedCardMetaProps} title={todo.todo} />
+                    </Card>
+                ))}
+            </div>
+            <TodoEditModal open={isEditOpen} initialValue={editingTodo?.todo} onOk={handleEditOk} onCancel={handleEditCancel} />
+            <TodoEditModal open={isCreateOpen} initialValue={''} title={'Create Todo'} onOk={handleCreateOk} onCancel={handleCreateCancel} />
+
+        </div >
     );
 };
 
