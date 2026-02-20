@@ -1,6 +1,15 @@
 import { createAction } from "redux-actions";
 import { IAuthStateContext } from "./context";
-import { AuthActionEnums } from "./reducer";
+
+export enum AuthActionEnums {
+    loginPending = "LOGIN_PENDING",
+    loginSuccess = "LOGIN_SUCCESS",
+    loginError = "LOGIN_ERROR",
+
+    logoutPending = "LOGOUT_PENDING",
+    logoutError = "LOGOUT_ERROR",
+    logoutSuccess = "LOGOUT_SUCCESS",
+}
 
 export const loginPending = createAction<IAuthStateContext>(
     AuthActionEnums.loginPending,
