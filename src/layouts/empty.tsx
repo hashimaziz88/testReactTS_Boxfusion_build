@@ -1,15 +1,9 @@
 import React from "react";
-import { Layout, Menu, theme } from "antd";
-import { Link, Outlet } from "react-router-dom";
+import { Layout, theme } from "antd";
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/navbar";
+const { Content, Footer } = Layout;
 
-const { Header, Content, Footer } = Layout;
-
-
-const items = [
-  { key: 1, label: <Link to="/">Home</Link> },
-  { key: 2, label: <Link to="/client">Client</Link> },
-  { key: 3, label: <Link to="/admin">Admin</Link> },
-];
 
 const App: React.FC = () => {
 
@@ -27,17 +21,7 @@ const App: React.FC = () => {
         overflow: "auto",
       }}
     >
-      <Header style={{ display: "flex" }}>
-        <div className="demo-logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["1"]}
-          items={items}
-          style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
-
-        />
-      </Header>
+      <Navbar />
       <Content style={{ padding: "16px 24px", backgroundColor: colorBgContainer }}>
         <div style={{
           backgroundColor: "white",

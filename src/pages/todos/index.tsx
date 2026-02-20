@@ -1,46 +1,18 @@
 import React from 'react';
-import { EditOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card } from 'antd';
 import type { CardMetaProps, CardProps } from 'antd';
-import { createStyles } from 'antd-style';
+import { useStyles, stylesCard } from './styles/style';
 import { useEffect } from 'react';
 import { useTodoActions, useTodoState } from '../../providers/todoProvider';
 import { ITodo } from '../../providers/todoProvider/context';
 
 const { Meta } = Card;
 
-const useStyles = createStyles(({ token }) => ({
-    root: {
-        width: 300,
-        backgroundColor: token.colorBgContainer,
-        borderRadius: token.borderRadius,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        border: `1px solid ${token.colorBorderSecondary}`,
-    },
-    header: {
-        borderBottom: 'none',
-        paddingBottom: 8,
-    },
-    body: {
-        paddingTop: 0,
-    },
-}));
-
-const stylesCard: CardProps['styles'] = {
-    root: {
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        borderRadius: 8,
-    },
-    title: {
-        fontSize: 16,
-        fontWeight: 500,
-    },
-};
 
 const actions = [
-    <HeartOutlined key="heart" style={{ color: '#ff6b6b' }} />,
-    <ShareAltOutlined key="share" style={{ color: '#4ecdc4' }} />,
     <EditOutlined key="edit" style={{ color: '#45b7d1' }} />,
+    <DeleteOutlined key="delete" style={{ color: '#ff6b6b' }} />,
 ];
 
 const App: React.FC = () => {
@@ -70,7 +42,7 @@ const App: React.FC = () => {
     };
 
     const sharedCardMetaProps: CardMetaProps = {
-        avatar: <Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${Math.floor(Math.random() * 1000)}`} />,
+        avatar: <Avatar src={`${import.meta.env.VITE_API_AVATAR_URL}${Math.floor(Math.random() * 1000)}`} />,
     };
 
     return (
@@ -82,6 +54,7 @@ const App: React.FC = () => {
                     styles={stylesCard}
                     extra={<Button type="link">More</Button>}
                     variant="borderless"
+
                 >
                     <Meta {...sharedCardMetaProps} title={todo.todo} />
                 </Card>

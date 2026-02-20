@@ -1,0 +1,55 @@
+import React from "react";
+import { Layout, Menu, Button } from "antd";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuthActions } from "../providers/authProvider";
+
+const { Header } = Layout;
+
+
+const items = [
+    { key: 1, label: <Link to="/">Home</Link> },
+    { key: 2, label: <Link to="/client">Todos</Link> },
+    { key: 3, label: <Link to="/admin">Admin</Link> },
+];
+
+const App: React.FC = () => {
+    // const {
+    //     token: { colorBgContainer, borderRadiusLG },
+    // } = theme.useToken();
+
+    const navigate = useNavigate();
+    const { logout } = useAuthActions();
+    const location = useLocation();
+
+    const handleLogout = async () => {
+        try {
+            const res = await logout();
+            if (res && res.success) navigate("/login");
+        } catch (err) {
+            console.error("Logout failed", err);
+        }
+    };
+
+    return (
+        <Header style={{ display: "flex", alignItems: "center" }}>
+            <div className="demo-logo" />
+            <Menu
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={[location.pathname === "/admin" ? "3" : location.pathname === "/client" ? "2" : "1"]}
+                items={items}
+                style={{ flex: 1, minWidth: 0, justifyContent: "center", display: "flex" }}
+
+            />
+            {(location.pathname === "/admin" || location.pathname === "/client") && (
+                <div style={{ marginLeft: 12 }}>
+                    <Button type="primary" onClick={handleLogout}>
+                        Logout
+                    </Button>
+                </div>
+            )}
+        </Header>
+    );
+};
+
+export default App;
