@@ -1,12 +1,13 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { JSX } from "react/jsx-runtime";
 
 interface WithAuthProps {
     allowedRoles?: string[];
 }
 
 const withAuth = (WrappedComponent: React.ComponentType, { allowedRoles = [] }: WithAuthProps = {}) => {
-    return (props: any) => {
+    return (props: JSX.IntrinsicAttributes) => {
         const token = localStorage.getItem("auth_token");
         const userRole = localStorage.getItem("user_role");
 

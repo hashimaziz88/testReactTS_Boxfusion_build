@@ -15,7 +15,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const local = readTodos();
             const found = local.find(t => t.id === id);
             if (found) {
-                dispatch(getTodoSuccess(found as ITodo));
+                dispatch(getTodoSuccess(found));
                 return;
             }
             const endpoint = `todos/${id}`;
@@ -32,12 +32,12 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const seeded = await ensureSeeded(instance);
             if (seeded && seeded.length > 0) {
-                dispatch(getTodosSuccess(seeded as ITodo[]));
+                dispatch(getTodosSuccess(seeded));
                 return;
             }
 
             const local = readTodos();
-            dispatch(getTodosSuccess(local as ITodo[]));
+            dispatch(getTodosSuccess(local));
         } catch (error) {
             console.error(error);
             dispatch(getTodosError());
@@ -49,11 +49,11 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             const local = readTodos();
             const nextId = getNextId(local);
-            const newTodo: TodoItem = { ...todo as any, id: nextId };
+            const newTodo: TodoItem = { ...todo, id: nextId };
             const updated = [newTodo, ...local];
             writeTodos(updated);
-            dispatch(createTodoSuccess(newTodo as ITodo));
-            dispatch(getTodosSuccess(updated as ITodo[]));
+            dispatch(createTodoSuccess(newTodo));
+            dispatch(getTodosSuccess(updated));
         } catch (error) {
             console.error(error);
             dispatch(createTodoError());
@@ -71,8 +71,8 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
             local[idx] = { ...local[idx], ...todo };
             writeTodos(local);
-            dispatch(updateTodoSuccess(local[idx] as ITodo));
-            dispatch(getTodosSuccess(local as ITodo[]));
+            dispatch(updateTodoSuccess(local[idx]));
+            dispatch(getTodosSuccess(local));
         } catch (error) {
             console.error(error);
             dispatch(updateTodoError());
@@ -86,7 +86,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const updated = local.filter(t => t.id !== todo.id);
             writeTodos(updated);
             dispatch(deleteTodoSuccess(todo));
-            dispatch(getTodosSuccess(updated as ITodo[]));
+            dispatch(getTodosSuccess(updated));
         } catch (error) {
             console.error(error);
             dispatch(deleteTodoError());

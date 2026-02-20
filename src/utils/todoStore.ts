@@ -1,3 +1,5 @@
+import { AxiosInstance } from "axios";
+
 export interface TodoItem {
     id: number;
     todo: string;
@@ -10,7 +12,7 @@ const STORAGE_KEY = "dummy_todos_v1";
 export const readTodos = (): TodoItem[] => {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) as TodoItem[] : [];
+        return raw ? JSON.parse(raw): [];
     } catch (e) {
         console.error('todoStore.readTodos failed', e);
         return [];
@@ -26,7 +28,7 @@ export const writeTodos = (todos: TodoItem[]) => {
 };
 
 // If storage is empty, fetch from API endpoint `todos` and seed storage.
-export const ensureSeeded = async (instance?: any): Promise<TodoItem[]> => {
+export const ensureSeeded = async (instance: AxiosInstance): Promise<TodoItem[]> => {
     const local = readTodos();
     if (local && local.length > 0) return local;
     if (!instance) return [];
