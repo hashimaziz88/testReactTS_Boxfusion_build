@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, Menu, Button, theme } from "antd";
+import { Layout, Menu, Button, message } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthActions } from "../providers/authProvider";
 import { useStyles } from "./styles/style";
@@ -22,10 +22,14 @@ const App: React.FC = () => {
         try {
             const res = await logout();
             if (res && res.success) navigate("/");
+            message.success("Logged out successfully");
         } catch (err) {
             console.error("Logout failed", err);
+            message.error("Logout failed");
         }
     };
+
+    const selectedKey = location.pathname === "/admin" ? "3" : location.pathname === "/client" ? "2" : "1";
 
     return (
 
@@ -34,7 +38,7 @@ const App: React.FC = () => {
             <Menu
                 theme="dark"
                 mode="horizontal"
-                defaultSelectedKeys={[location.pathname === "/admin" ? "3" : location.pathname === "/client" ? "2" : "1"]}
+                defaultSelectedKeys={[selectedKey]}
                 items={items}
                 className={styles.menu}
 
