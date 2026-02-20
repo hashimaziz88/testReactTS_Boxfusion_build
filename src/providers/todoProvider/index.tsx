@@ -30,14 +30,12 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const getTodos = async () => {
         dispatch(getTodosPending());
         try {
-            // ensure storage seeded once; after that read from localStorage only
             const seeded = await ensureSeeded(instance);
             if (seeded && seeded.length > 0) {
                 dispatch(getTodosSuccess(seeded as ITodo[]));
                 return;
             }
 
-            // if ensureSeeded returned empty, still read local (may be empty)
             const local = readTodos();
             dispatch(getTodosSuccess(local as ITodo[]));
         } catch (error) {
